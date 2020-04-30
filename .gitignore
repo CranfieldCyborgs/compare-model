@@ -2,3 +2,4 @@ envs
 saved_models
 .vscode
 ResNet50
+src/__pycache__
