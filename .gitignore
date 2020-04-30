@@ -2,4 +2,9 @@ envs
 saved_models
 .vscode
 ResNet50
+ResNet50v2
+ResNet101
+ResNet101v2
+ResNet152
+ResNet152v2
 src/__pycache__

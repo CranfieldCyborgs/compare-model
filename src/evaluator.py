@@ -68,6 +68,7 @@ class Evaluator:
         # according to the performance curves choose the best parameters
         #! ls checkpoint_dir
         # latest = tf.train.latest_checkpoint(checkpoint_dir)
+        # Todo: Parametrize model selection for evaluation
         model.load_weights(model_dest + '/cp-0001.ckpt')
 
         # Using validation datasets to predict
@@ -106,8 +107,7 @@ class Evaluator:
         c_ax.set_xlabel('False Positive Rate')
         c_ax.set_ylabel('True Positive Rate')
 
-        # Todo: Change this to automatically get filename
-        fig.savefig('./' + model_figures_dest + '/auc_ResNet50.png')
+        fig.savefig('./' + model_figures_dest + '/auc_' + model_dest + '.png')
 
 
         # print("[INFO] saving COVID-19 detector model...")

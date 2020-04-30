@@ -27,7 +27,8 @@ def generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumon
     full_img_paths = {path.basename(x): x for x in my_glob}
     df_NIH['path'] = df_NIH['Image Index'].map(full_img_paths.get)
 
-    # keep 4 normal & single desease 
+    # keep 4 normal & single disease
+    # Todo: Extract out
     labels = ['Effusion', 'Atelectasis', 'Infiltration', 'Pneumonia', 'No Finding'] #'Nodule', 
 
     df_NIH = df_NIH[df_NIH['Finding Labels'].isin(labels)]
@@ -45,6 +46,7 @@ def generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumon
     df_COVID19 = pd.DataFrame(glob3, columns=['path'])
     df_COVID19['Finding Labels'] = 'Pneumonia' # be careful about the label here
     # df_COVID19['Finding Labels'] = 'COVID-19' # be careful about the label here
+    # Todo: COVID might not be in the nih_metadata
 
     # concat the NIH pneumonia, kaggle pneumonia and COVID-19 images together
     # here is the final data set

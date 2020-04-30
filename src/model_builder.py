@@ -4,8 +4,7 @@ from keras.optimizers import Adam
 import matplotlib.pyplot as plt
 import numpy as np
 
-def construct(baseKerasModel):
-
+def construct(baseKerasModel, no_of_classes):
     ## model part
 
     # load the ResNet50 network, ensuring the head FC layer sets are left off
@@ -19,7 +18,7 @@ def construct(baseKerasModel):
     headModel = Flatten(name="flatten")(headModel)
     headModel = Dense(64, activation="relu")(headModel)
     headModel = Dropout(0.5)(headModel)
-    headModel = Dense(5, activation="softmax")(headModel) #How many classes?
+    headModel = Dense(no_of_classes, activation="softmax")(headModel) #How many classes?
 
     # place the head FC model on top of the base model (this will become
     # the actual model we will train)

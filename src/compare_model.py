@@ -5,7 +5,7 @@ import model_builder as mb
 from evaluator import Evaluator
 
 # test GPU and setup
-setup.gpu_test_and_setup()
+setup.init()
 
 # Overall variables
 model_dest = setup.models[0][0]
@@ -20,7 +20,9 @@ EPOCHS = setup.EPOCHS
 
 # ## model part
 
-model = mb.construct(baseKerasModel)
+# Todo: len(setup.labels) - 1 because COVID-19 is not a class yet
+no_of_classes = len(setup.labels) - 1
+model = mb.construct(baseKerasModel, no_of_classes)
 
 evaluator = Evaluator(train_generator, test_generator, valid_X, valid_Y, EPOCHS)
 
