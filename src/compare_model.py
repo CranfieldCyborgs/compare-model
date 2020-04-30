@@ -1,3 +1,7 @@
+# This supresses the debug log when using Tensorflow-gpu. This needs to be before the tf import.
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
+
 from keras.preprocessing.image import ImageDataGenerator
 
 from keras.applications import VGG16
@@ -29,7 +33,7 @@ sns.set_style('whitegrid')
 from glob import glob
 # coding=utf-8
 
-# test GPU
+# test GPU and setup
 
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
@@ -56,6 +60,9 @@ covid19_image_path = "D:/Hasan/Programming/Tensorflow/datasets/COVID19_Ali_Jiaqi
 
 model_dest = "ResNet50"
 model_figures_dest = "ResNet50_fig"
+
+# Todo
+# Put all six of the ResNet functions into an array, and iterate the process over all of them.
 
 baseKerasModel = ResNet50
 
@@ -182,7 +189,7 @@ valid_X, valid_Y = next(test_datagen.flow_from_dataframe(
 ))
 
 
-
+# The following is what can be iterated over multiple models
 
 ## model part
 
