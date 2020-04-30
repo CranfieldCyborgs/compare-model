@@ -5,7 +5,7 @@ import pandas as pd
 import seaborn as sns
 from keras.preprocessing.image import ImageDataGenerator
 
-def generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumonia_image_path, covid19_image_path):
+def generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumonia_image_path, covid19_image_path, labels):
     """
     There are 3 datasets.
     1. NIH datasets: contains more than 100,000 images of different thoracic disease.
@@ -28,8 +28,9 @@ def generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumon
     df_NIH['path'] = df_NIH['Image Index'].map(full_img_paths.get)
 
     # keep 4 normal & single disease
-    # Todo: Extract out
-    labels = ['Effusion', 'Atelectasis', 'Infiltration', 'Pneumonia', 'No Finding'] #'Nodule', 
+    # labels = ['Effusion', 'Atelectasis', 'Infiltration', 'Pneumonia', 'No Finding'] #'Nodule', 
+    # This brings it back to the same state as it was before, with all of the labels definied else where
+    # labels = list(filter(lambda label: label != "COVID-19", all_labels))
 
     df_NIH = df_NIH[df_NIH['Finding Labels'].isin(labels)]
 
@@ -44,9 +45,7 @@ def generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumon
     ## 1.3 COVID-19 images preprocessing
     glob3 = glob(covid19_image_path)
     df_COVID19 = pd.DataFrame(glob3, columns=['path'])
-    df_COVID19['Finding Labels'] = 'Pneumonia' # be careful about the label here
-    # df_COVID19['Finding Labels'] = 'COVID-19' # be careful about the label here
-    # Todo: COVID might not be in the nih_metadata
+    df_COVID19['Finding Labels'] = 'COVID-19' # be careful about the label here
 
     # concat the NIH pneumonia, kaggle pneumonia and COVID-19 images together
     # here is the final data set
@@ -57,6 +56,9 @@ def generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumon
     for i in labels:
         temp = len(xray_data[xray_data['Finding Labels'].isin([i])])
         num.append(temp)
+
+    print("DEBUG: Number of each label = ")
+    print(dict(zip(labels, num)))
 
     # draw the data distribution
     df_draw = pd.DataFrame(data={'labels':labels, 'num':num})
@@ -143,9 +145,9 @@ def data_generator(train_datagen, test_datagen, train_set, test_set, valid_set):
 
     return (train_generator, test_generator, valid_X, valid_Y)
 
-def preprocessing(nih_metadata_path, nih_image_path, pneumonia_image_path, covid19_image_path):
+def preprocessing(nih_metadata_path, nih_image_path, pneumonia_image_path, covid19_image_path, labels):
 
-    (train_set, test_set, valid_set, xray_data) = generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumonia_image_path, covid19_image_path)
+    (train_set, test_set, valid_set, xray_data) = generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumonia_image_path, covid19_image_path, labels)
 
     debug_set(train_set, test_set, valid_set, xray_data)
 
