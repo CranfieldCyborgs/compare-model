@@ -64,17 +64,10 @@ class Evaluator:
         plt.savefig('performance_'+ model_dest +'.png', ppi=300)    
 
     def eval_with(self, model, model_dest, model_figures_dest, model_name = '/cp-0001.ckpt'):
-        
+        # TODO: Parametrize model selection for evaluation
         # according to the performance curves choose the best parameters
         #! ls checkpoint_dir
         # latest = tf.train.latest_checkpoint(checkpoint_dir)
-        # TODO: Parametrize model selection for evaluation
-        # if self.model is None:
-            # raise ValueError("Model has not been initialized. Train the model first.")
-        
-        # Resets the model for evaluation
-        # self.model = model
-        
         try:
             # TODO: Use os.path.join() here.
             model.load_weights(model_dest + model_name)

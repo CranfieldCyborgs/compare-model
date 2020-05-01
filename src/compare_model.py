@@ -8,11 +8,12 @@ def run_training(evaluator, no_of_classes):
     print("CompareModel training starting...")
 
     for index, base_model_and_params in enumerate(models):
-        
-        if index in range(0, 5):
-            continue
+        print("Training model [" + index + " of " + len(models) + "]")
+        # DEBUG
+        # if index in range(0, 5):
+        #     continue
 
-        (model_dest, model_figures_dest, base_keras_model) = base_model_and_params
+        (model_dest, _, base_keras_model) = base_model_and_params
         
         model = mb.construct(base_keras_model, no_of_classes)
         
@@ -30,9 +31,10 @@ def run_evaluation(evaluator, no_of_classes, list_of_eval_models):
 
     # TODO: Make a list of all the optimum models and iterate over that too.
     for index, base_model_and_params in enumerate(models):
-        
-        if index in range(0, 5):
-            continue
+        print("Evaluating model [" + index + " of " + len(models) + "]")
+        # DEBUG
+        # if index in range(0, 5):
+        #     continue
 
         (model_dest, model_figures_dest, base_keras_model) = base_model_and_params
         
@@ -77,30 +79,27 @@ def run(option="train", list_of_eval_models = None):
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-t", "--train", help="Run training", action="store_true")
-
-# TODO: Add parameter to select the model to evaluate with as a list or something
 parser.add_argument("-e", "--evaluate", help="Run evaluation", action="store_true")
 
-# This should be the last flag and everything following that should be relative paths to models.
 parser.add_argument("-m", "--models", help="Specify list of stored model files for the evalutor to use for the evaluator. Otherwise the default file <TODO: filename> will be used.", nargs="+")
 
 args = parser.parse_args()
 
-
+# TODO Do some testing of the cmdline utility and functionality
 if args.evaluate and args.models:
     # TODO convert them into paths and then pass it in?
     print(args.models)
-    # run("evaluate", args.models)
+    run("evaluate", args.models)
 elif args.train and args.models:
     print("Program options not recognized.")
     parser.print_help()
     sys.exit()
 elif args.train:
     print("Training...")
-    # run("train")
+    run("train")
 elif args.evaluate:
     print("Evaluating...")
-    # run("evaluate")
+    run("evaluate")
 else:
     print("Program options not recognized.")
     parser.print_help()
