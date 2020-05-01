@@ -17,27 +17,36 @@ no_of_classes = len(setup.labels)
 
 evaluator = Evaluator(train_generator, test_generator, valid_X, valid_Y, EPOCHS)
 
-print("CompareModel training starting...")
+def run_training():
+    print("CompareModel training starting...")
 
-for index, base_model in enumerate(setup.models):
-    
-    model_dest = base_model[0]
-    model_figures_dest = base_model[1]
-    base_keras_model = base_model[2]
-    
-    model = mb.construct(base_keras_model, no_of_classes)
-    evaluator.train(model, model_dest)
+    for index, base_model_and_params in enumerate(setup.models):
+        
+        (model_dest, model_figures_dest, base_keras_model) = base_model_and_params
+        
+        model = mb.construct(base_keras_model, no_of_classes)
+        
+        H = evaluator.train(model, model_dest)
+        evaluator.plot(H)
 
-print("CompareModel training completed.")
+    print("CompareModel training completed.")
 
-print("CompareModel evaluation starting...")
 
-# TODO: Make a list of all the optimum models and iterate over that too.
-for index, base_model in enumerate(setup.models):
-    
-    model_dest = base_model[0]
-    model_figures_dest = base_model[1]
-    
-    evaluator.eval_with(model_dest, model_figures_dest)
+def run_evaluation():
+    print("CompareModel evaluation starting...")
 
-print("CompareModel evaluating completed.")
+    # TODO: Make a list of all the optimum models and iterate over that too.
+    for index, base_model_and_params in enumerate(setup.models):
+        
+        # if index in range(0, 5):
+        #     continue
+
+        (model_dest, model_figures_dest, base_keras_model) = base_model_and_params
+        
+        model = mb.construct(base_keras_model, no_of_classes)
+
+        evaluator.eval_with(model, model_dest, model_figures_dest)
+
+    print("CompareModel evaluating completed.")
+
+run_evaluation()

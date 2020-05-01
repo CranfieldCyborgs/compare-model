@@ -12,10 +12,10 @@ class Evaluator:
         self.valid_X = valid_X
         self.valid_Y = valid_Y
         self.epochs = epochs
-        self.model = None
+        # self.model = None
     
     def train(self, model, model_dest):
-        self.model = model
+        # self.model = model
         # Saving parameters of each epoch
         # Todo: parametrize this or separate to function
         checkpoint_path = model_dest + "/cp-{epoch:04d}.ckpt"
@@ -44,11 +44,11 @@ class Evaluator:
                 callbacks=[cp_callback]
                 )
 
-        self._plot(H)
+        # self._plot(H)
 
         return H
 
-    def _plot(self, H):
+    def plot(self, H):
         # plot the training loss and accuracy
         N = self.epochs
         plt.style.use("ggplot")
@@ -63,23 +63,31 @@ class Evaluator:
         plt.legend(loc="lower left")
         plt.savefig('performance2.png', ppi=300)    
 
-    def eval_with(self, model_dest, model_figures_dest, model_name = '/cp-0001.ckpt'):
+    def eval_with(self, model, model_dest, model_figures_dest, model_name = '/cp-0001.ckpt'):
         
         # according to the performance curves choose the best parameters
         #! ls checkpoint_dir
         # latest = tf.train.latest_checkpoint(checkpoint_dir)
         # TODO: Parametrize model selection for evaluation
-        if self.model is None:
-            raise ValueError("Model has not been initialized. Train the model first.")
+        # if self.model is None:
+            # raise ValueError("Model has not been initialized. Train the model first.")
         
-        # TODO: Use os.path.join() here.
-        self.model.load_weights(model_dest + model_name)
+        # Resets the model for evaluation
+        # self.model = model
+        
+        try:
+            # TODO: Use os.path.join() here.
+            model.load_weights(model_dest + model_name)
+        except ValueError as ve:
+            print("ERROR when trying to load weights to model.")
+            raise ve
+        
 
         # Using validation datasets to predict
         print("[INFO] evaluating network...")
         # predval = model.predict(valid_X)
         # for reccall
-        predval = self.model.predict(self.valid_X)
+        predval = model.predict(self.valid_X)
 
         # for each image in the testing set we need to find the index of the
         # label with corresponding largest predicted probability
@@ -93,7 +101,7 @@ class Evaluator:
 
 
         # scores = model.evaluate(valid_X, valid_Y, verbose=1)
-        scores = self.model.evaluate(self.valid_X, self.valid_Y, verbose=1)
+        scores = model.evaluate(self.valid_X, self.valid_Y, verbose=1)
         print('Validation loss:', scores[0])
         print('Validation accuracy:', scores[1])
 
