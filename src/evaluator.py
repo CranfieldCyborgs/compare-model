@@ -48,7 +48,7 @@ class Evaluator:
 
         return H
 
-    def plot(self, H):
+    def plot(self, H, model_dest):
         # plot the training loss and accuracy
         N = self.epochs
         plt.style.use("ggplot")
@@ -61,7 +61,7 @@ class Evaluator:
         plt.xlabel("Epoch #")
         plt.ylabel("Loss/Accuracy")
         plt.legend(loc="lower left")
-        plt.savefig('performance2.png', ppi=300)    
+        plt.savefig('performance_'+ model_dest +'.png', ppi=300)    
 
     def eval_with(self, model, model_dest, model_figures_dest, model_name = '/cp-0001.ckpt'):
         

@@ -20,7 +20,7 @@ model_figures_destinations = list(map(lambda name: name+"_fig", model_destinatio
 # model is tuple = (model_dest, model_figures_dest, kerasModel)
 models = list(zip(model_destinations, model_figures_destinations, keras_models))
 
-EPOCHS = 30
+EPOCHS = 1
 
 labels = ['Effusion', 'Atelectasis', 'Infiltration', 'Pneumonia', 'No Finding', 'COVID-19']
 
