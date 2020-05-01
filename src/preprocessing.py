@@ -27,11 +27,6 @@ def generate_training_and_testing_set(nih_metadata_path, nih_image_path, pneumon
     full_img_paths = {path.basename(x): x for x in my_glob}
     df_NIH['path'] = df_NIH['Image Index'].map(full_img_paths.get)
 
-    # keep 4 normal & single disease
-    # labels = ['Effusion', 'Atelectasis', 'Infiltration', 'Pneumonia', 'No Finding'] #'Nodule', 
-    # This brings it back to the same state as it was before, with all of the labels definied else where
-    # labels = list(filter(lambda label: label != "COVID-19", all_labels))
-
     df_NIH = df_NIH[df_NIH['Finding Labels'].isin(labels)]
 
 

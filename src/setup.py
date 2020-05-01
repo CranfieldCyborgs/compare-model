@@ -20,9 +20,8 @@ model_figures_destinations = list(map(lambda name: name+"_fig", model_destinatio
 # model is tuple = (model_dest, model_figures_dest, kerasModel)
 models = list(zip(model_destinations, model_figures_destinations, keras_models))
 
-EPOCHS = 2
+EPOCHS = 30
 
-# Todo: make it work with the NIH-metadata
 labels = ['Effusion', 'Atelectasis', 'Infiltration', 'Pneumonia', 'No Finding', 'COVID-19']
 
 def gpu_test_and_setup():
