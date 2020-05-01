@@ -8,10 +8,10 @@ from evaluator import Evaluator
 setup.init()
 
 # Overall variables
-model_dest = setup.models[0][0]
-model_figures_dest = setup.models[0][1]
+# model_dest = setup.models[0][0]
+# model_figures_dest = setup.models[0][1]
 
-baseKerasModel = setup.models[0][2]
+# baseKerasModel = setup.models[0][2]
 EPOCHS = setup.EPOCHS
 
 # Preprocessing
@@ -22,8 +22,20 @@ EPOCHS = setup.EPOCHS
 
 # Todo: len(setup.labels) - 1 because COVID-19 is not a class yet
 no_of_classes = len(setup.labels)
-model = mb.construct(baseKerasModel, no_of_classes)
+
 
 evaluator = Evaluator(train_generator, test_generator, valid_X, valid_Y, EPOCHS)
 
-evaluator.run_with(model, model_dest, model_figures_dest)
+for index, base_model in enumerate(setup.models):
+    
+    model_dest = base_model[0]
+    model_figures_dest = base_model[1]
+    base_keras_model = base_model[2]
+    
+    if index == 1:
+        break
+
+    model = mb.construct(base_keras_model, no_of_classes)
+    evaluator.run_with(model, model_dest, model_figures_dest)
+
+print("CompareModel completed.")
