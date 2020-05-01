@@ -16,12 +16,14 @@ def construct(base_keras_model, no_of_classes):
     # Changing the averagepooling method for inceptionv3
     if base_keras_model == InceptionV3:
         head_model = GlobalAveragePooling2D()(head_model)
+        head_model = Dense(512, activation="relu")(head_model)
+        head_model = Dropout(0.5)(head_model)
+        head_model = Dense(512, activation="relu")(head_model)
     else:
         head_model = AveragePooling2D(pool_size=(4, 4))(head_model)
+        head_model = Flatten(name="flatten")(head_model)
+        head_model = Dense(64, activation="relu")(head_model)
 
-
-    head_model = Flatten(name="flatten")(head_model)
-    head_model = Dense(64, activation="relu")(head_model)
     head_model = Dropout(0.5)(head_model)
     head_model = Dense(no_of_classes, activation="softmax")(head_model) #How many classes?
 
