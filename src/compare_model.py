@@ -8,7 +8,7 @@ def run_training(evaluator, no_of_classes):
     print("CompareModel training starting...")
 
     for index, base_model_and_params in enumerate(models):
-        print("Training model [" + str(index) + " of " + str(len(models)) + "]")
+        print("Training model [" + str(index + 1) + " of " + str(len(models)) + "]")
         # DEBUG
         # if index in range(0, 5):
         #     continue
@@ -31,7 +31,7 @@ def run_evaluation(evaluator, no_of_classes, list_of_eval_models):
 
     # TODO: Make a list of all the optimum models and iterate over that too.
     for index, base_model_and_params in enumerate(models):
-        print("Evaluating model [" + str(index) + " of " + str(len(models)) + "]")
+        print("Evaluating model [" + str(index + 1) + " of " + str(len(models)) + "]")
         # DEBUG
         # if index in range(0, 5):
         #     continue
