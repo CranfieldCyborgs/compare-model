@@ -41,13 +41,13 @@ def run_evaluation(evaluator, no_of_classes, list_of_eval_models):
         model = mb.construct(base_keras_model, no_of_classes)
 
         if list_of_eval_models is None:
+            print("Evaluating with default model.")
             evaluator.eval_with(model, model_dest, model_figures_dest)
+        elif len(list_of_eval_models) != len(models):
+            raise ValueError("Not enough models listed for evaluation.")
         else:
-            # TODO Run with defaults if not enough files given
-            if len(list_of_eval_models) != len(models):
-                raise ValueError("Not enough models listed for evaluation.") 
-            print("TODO")
-
+            evaluator.eval_with(model, model_dest, model_figures_dest, list_of_eval_models[index])
+            
     print("CompareModel evaluating completed.")
 
 
@@ -81,14 +81,20 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-t", "--train", help="Run training", action="store_true")
 parser.add_argument("-e", "--evaluate", help="Run evaluation", action="store_true")
 
-parser.add_argument("-m", "--models", help="Specify list of stored model files for the evalutor to use for the evaluator. Otherwise the default file <TODO: filename> will be used.", nargs="+")
+# TODO Fix this. This is temporary and is repeated
+model_destinations_copy = ["Inceptionv3", "VGG16", "ResNet50", "ResNet101", "ResNet152", "ResNet50v2", "ResNet101v2", "ResNet152v2"]
+
+parser.add_argument("-m", "--models", help="Specify list of stored model files for the evalutor to use for the evaluator. Otherwise the default file <TODO: filename> will be used. The order of the model file names should correspond to the order of the models evaluated: " + str(model_destinations_copy), nargs="+")
+
+# Format '/cp-0001.ckpt'
+# Command line flag to run it: -e -m /cp-0025.ckpt /cp-0021.ckpt /cp-0022.ckpt /cp-0026.ckpt /cp-0026.ckpt /cp-0024.ckpt /cp-0024.ckpt /cp-0027.ckpt
 
 args = parser.parse_args()
 
 # TODO Do some testing of the cmdline utility and functionality
 if args.evaluate and args.models:
     # TODO convert them into paths and then pass it in?
-    print(args.models)
+    print(dict(zip(model_destinations_copy, args.models)))
     run("evaluate", args.models)
 elif args.train and args.models:
     print("Program options not recognized.")

@@ -2,21 +2,19 @@
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='3'
 
-from os.path import abspath, exists, basename
-
 import tensorflow as tf
 from keras.applications.vgg16 import VGG16
 from keras.applications.inception_v3 import InceptionV3
 from keras.applications.resnet import ResNet50, ResNet101, ResNet152
 from keras.applications.resnet_v2 import ResNet50V2, ResNet101V2, ResNet152V2
 
+from os.path import abspath, exists, basename
 
 keras_models = [InceptionV3, VGG16, ResNet50, ResNet101, ResNet152, ResNet50V2, ResNet101V2, ResNet152V2]
 
 model_destinations = ["Inceptionv3", "VGG16", "ResNet50", "ResNet101", "ResNet152", "ResNet50v2", "ResNet101v2", "ResNet152v2"]
 
 model_figures_destinations = list(map(lambda name: name+"_fig", model_destinations))
-
 
 # models is an array of model, where
 # model is tuple = (model_dest, model_figures_dest, kerasModel)
