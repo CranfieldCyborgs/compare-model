@@ -1,6 +1,8 @@
 envs
 saved_models
 .vscode
+Inceptionv3
+VGG16
 ResNet50
 ResNet50v2
 ResNet101
