@@ -24,10 +24,16 @@ def run_training(evaluator, no_of_classes):
 
 
 def run_evaluation(evaluator, no_of_classes, list_of_eval_models):
+    """
+    @return time taken for each
+    """
     import model_builder as mb
     from setup import models
+    import time
 
     print("CompareModel evaluation starting...")
+
+    list_of_time = []
 
     # TODO: Make a list of all the optimum models and iterate over that too.
     for index, base_model_and_params in enumerate(models):
@@ -40,6 +46,8 @@ def run_evaluation(evaluator, no_of_classes, list_of_eval_models):
         
         model = mb.construct(base_keras_model, no_of_classes)
 
+        start = time.perf_counter()
+
         if list_of_eval_models is None:
             print("Evaluating with default model.")
             evaluator.eval_with(model, model_dest, model_figures_dest)
@@ -47,12 +55,17 @@ def run_evaluation(evaluator, no_of_classes, list_of_eval_models):
             raise ValueError("Not enough models listed for evaluation.")
         else:
             evaluator.eval_with(model, model_dest, model_figures_dest, list_of_eval_models[index])
-            
+
+        end = time.perf_counter()
+
+        list_of_time.append(end-start)
+    
     print("CompareModel evaluating completed.")
+    return list_of_time
 
 
 def run(option="train", list_of_eval_models = None):
-    from setup import init, labels, EPOCHS
+    from setup import init, labels, EPOCHS, model_destinations
     from dataset import nih_image_path, nih_metadata_path, covid19_image_path, pneumonia_image_path
     from preprocessing import preprocessing
     import model_builder as mb
@@ -71,7 +84,13 @@ def run(option="train", list_of_eval_models = None):
     if option == "train":
         run_training(evaluator, no_of_classes)
     elif option == "evaluate":
-        run_evaluation(evaluator, no_of_classes, list_of_eval_models)
+        times = run_evaluation(evaluator, no_of_classes, list_of_eval_models)
+        
+        times_mapped_to_models = dict(zip(model_destinations, times))
+
+        for model, time in times_mapped_to_models.items():
+            print(model, ": ", time, "s")
+
     else:
         raise ValueError("Unrecognized run flag. Did you mean 'train' or 'evaluate'?")
 
