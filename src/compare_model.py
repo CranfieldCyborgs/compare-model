@@ -106,7 +106,8 @@ model_destinations_copy = ["Inceptionv3", "VGG16", "ResNet50", "ResNet101", "Res
 parser.add_argument("-m", "--models", help="Specify list of stored model files for the evalutor to use for the evaluator. Otherwise the default file <TODO: filename> will be used. The order of the model file names should correspond to the order of the models evaluated: " + str(model_destinations_copy), nargs="+")
 
 # Format '/cp-0001.ckpt'
-# Command line flag to run it: -e -m /cp-0025.ckpt /cp-0021.ckpt /cp-0022.ckpt /cp-0026.ckpt /cp-0026.ckpt /cp-0024.ckpt /cp-0024.ckpt /cp-0027.ckpt
+# ["Inceptionv3", "VGG16", "ResNet50", "ResNet101", "ResNet152", "ResNet50v2", "ResNet101v2", "ResNet152v2"]
+# Command line flag to run it: -e -m /cp-0024.ckpt /cp-0020.ckpt /cp-0021.ckpt /cp-0026.ckpt /cp-0024.ckpt /cp-0026.ckpt /cp-0024.ckpt /cp-0024.ckpt
 
 args = parser.parse_args()
 
